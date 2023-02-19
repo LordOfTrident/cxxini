@@ -23,6 +23,89 @@ namespace ini {
 	using sections = std::map<std::string, section>;
 
 	class record : public sections {
+	public:
+		record() {}
+		record(const sections &sec): sections(sec) {}
+
+		record(const std::string &str) {parse(str);}
+		record(std::istream &stream)   {parse(stream);}
+
+		std::string stringify() const {
+			std::string s;
+			bool        first = true, newline = false;
+			for (const auto &section : *this) {
+				if (not first or section.first != default_section) {
+					if (newline)
+						s += "\n\n";
+					else
+						newline = true;
+					s += "[" + section.first + "]";
+				}
+
+				if (first)
+					first = false;
+
+				for (const auto &pair : section.second) {
+					if (newline)
+						s += "\n";
+					else
+						newline = true;
+
+					s += stringify_value(pair.first) + " = " + stringify_value(pair.second);
+				}
+			}
+			return s;
+		}
+
+		size_t parse(const std::string &str) {
+			parsing_section.clear();
+
+			size_t pos = 0, row = 1;
+			while (pos < str.length()) {
+				size_t next = str.find_first_of('\n', pos);
+
+				std::string line;
+				if (next == std::string::npos)
+					line = str.substr(pos);
+				else
+					line = str.substr(pos, next - pos);
+
+				if (not parse_line(line))
+					return row;
+
+				if (next == std::string::npos)
+					break;
+
+				pos = next + 1;
+				++ row;
+			}
+			return 0;
+		}
+
+		size_t parse(std::istream &stream) {
+			parsing_section.clear();
+
+			size_t      row = 1;
+			std::string line;
+			while (std::getline(stream, line)) {
+				if (not parse_line(line))
+					return row;
+
+				++ row;
+			}
+			return 0;
+		}
+
+		friend std::ostream &operator <<(std::ostream &stream, const record &rec) {
+			stream << rec.stringify();
+			return stream;
+		}
+
+		friend std::istream &operator >>(std::istream &stream, record &rec) {
+			rec.parse(stream);
+			return stream;
+		}
+
 	private:
 		std::string parsing_section;
 
@@ -141,89 +224,6 @@ namespace ini {
 				s += "\"";
 
 			return s;
-		}
-
-	public:
-		record() {}
-		record(const sections &sec): sections(sec) {}
-
-		record(const std::string &str) {parse(str);}
-		record(std::istream &stream)   {parse(stream);}
-
-		std::string stringify() const {
-			std::string s;
-			bool        first = true, newline = false;
-			for (const auto &section : *this) {
-				if (not first or section.first != default_section) {
-					if (newline)
-						s += "\n\n";
-					else
-						newline = true;
-					s += "[" + section.first + "]";
-				}
-
-				if (first)
-					first = false;
-
-				for (const auto &pair : section.second) {
-					if (newline)
-						s += "\n";
-					else
-						newline = true;
-
-					s += stringify_value(pair.first) + " = " + stringify_value(pair.second);
-				}
-			}
-			return s;
-		}
-
-		size_t parse(const std::string &str) {
-			parsing_section.clear();
-
-			size_t pos = 0, row = 1;
-			while (pos < str.length()) {
-				size_t next = str.find_first_of('\n', pos);
-
-				std::string line;
-				if (next == std::string::npos)
-					line = str.substr(pos);
-				else
-					line = str.substr(pos, next - pos);
-
-				if (not parse_line(line))
-					return row;
-
-				if (next == std::string::npos)
-					break;
-
-				pos = next + 1;
-				++ row;
-			}
-			return 0;
-		}
-
-		size_t parse(std::istream &stream) {
-			parsing_section.clear();
-
-			size_t      row = 1;
-			std::string line;
-			while (std::getline(stream, line)) {
-				if (not parse_line(line))
-					return row;
-
-				++ row;
-			}
-			return 0;
-		}
-
-		friend std::ostream &operator <<(std::ostream &stream, const record &rec) {
-			stream << rec.stringify();
-			return stream;
-		}
-
-		friend std::istream &operator >>(std::istream &stream, record &rec) {
-			rec.parse(stream);
-			return stream;
 		}
 	};
 }
