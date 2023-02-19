@@ -14,7 +14,7 @@
 	<br><br><br>
 </p>
 
-A simple single-header C++ [INI](https://en.wikipedia.org/wiki/INI_file) reading and writing library.
+A simple single-header C++17 [INI](https://en.wikipedia.org/wiki/INI_file) reading and writing library.
 
 ## Table of contents
 * [Documentation](#documentation)
