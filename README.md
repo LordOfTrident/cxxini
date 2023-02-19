@@ -108,6 +108,8 @@ ini::record rec;
 std::ifstream file("test.ini");
 rec.parse(file);
 ```
+The return value of `parse` is 0 if there was no error, otherwise its the number of the line at
+which the error occured (starting at 1)
 
 you can also use the `>>` operator to read from a file
 ```cc

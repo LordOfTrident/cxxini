@@ -12,8 +12,12 @@ int main() {
 		return EXIT_FAILURE;
 	}
 
-	file >> rec;
-	// or rec.parse(file)
+	size_t res = rec.parse(file);
+	if (res != 0) {
+		std::cerr << "Error while parsing 'test.ini' at line " << res << std::endl;
+		return EXIT_FAILURE;
+	}
+	// You can also do file >> rec, but that provides no error checking
 
 	std::cout << rec << std::endl;
 
