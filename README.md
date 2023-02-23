@@ -5,10 +5,10 @@
 	<a href="./LICENSE">
 		<img alt="License" src="https://img.shields.io/badge/license-MIT-26c374?style=for-the-badge">
 	</a>
-	<a href="https://github.com/LordOfTrident/celisp/issues">
+	<a href="https://github.com/LordOfTrident/cxxini/issues">
 		<img alt="Issues" src="https://img.shields.io/github/issues/LordOfTrident/cxxini?style=for-the-badge&color=4f79e4">
 	</a>
-	<a href="https://github.com/LordOfTrident/celisp/pulls">
+	<a href="https://github.com/LordOfTrident/cxxini/pulls">
 		<img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/LordOfTrident/cxxini?style=for-the-badge&color=4f79e4">
 	</a>
 	<br><br><br>
