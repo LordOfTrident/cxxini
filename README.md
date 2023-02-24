@@ -16,6 +16,11 @@
 
 A simple single-header C++11 [INI](https://en.wikipedia.org/wiki/INI_file) reading and writing library.
 
+Clone with
+```sh
+$ git clone --recurse-submodules https://github.com/lordoftrident/cxxini
+```
+
 ## Table of contents
 * [Documentation](#documentation)
   * [Constructing](#constructing)
